@@ -1,1 +1,1 @@
-from .slock import BaseKey, lock
+from .slock import BaseKey, lock, get_lock
