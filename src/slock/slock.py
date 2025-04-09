@@ -2,7 +2,7 @@ from contextlib import contextmanager
 from threading import Lock
 from weakref import WeakValueDictionary
 
-from src.slock.base_key import BaseKey
+from .base_key import BaseKey
 
 __lock_pool: WeakValueDictionary[BaseKey:Lock] = WeakValueDictionary()
 
@@ -23,5 +23,6 @@ def get_lock(key: BaseKey) -> Lock:
 
 @contextmanager
 def lock(key: BaseKey):
-    with get_lock(key):
+    _lock = get_lock(key)
+    with _lock:
         yield
