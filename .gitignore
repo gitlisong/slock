@@ -1,4 +1,3 @@
 /.venv/
-/pyproject.toml
 /dist/
 /src/slock.egg-info/

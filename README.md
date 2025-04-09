@@ -84,3 +84,7 @@ for thread in threads:
 # 输出最终的结果
 print(f"最终共享资源的值：{shared_resource}")
 ```
+# 使用async
+```python
+from slock.async_lock import lock, get_lock
+```

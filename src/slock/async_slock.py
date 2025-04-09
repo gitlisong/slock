@@ -1,5 +1,5 @@
-from contextlib import contextmanager
-from threading import Lock
+from asyncio import Lock
+from contextlib import asynccontextmanager
 from weakref import WeakValueDictionary
 
 from src.slock.base_key import BaseKey
@@ -7,21 +7,17 @@ from src.slock.base_key import BaseKey
 __lock_pool: WeakValueDictionary[BaseKey:Lock] = WeakValueDictionary()
 
 __lock_global: Lock = Lock()
-__last_lock: Lock
 
-
-def get_lock(key: BaseKey) -> Lock:
-    global __last_lock
-    with __lock_global:
+async def get_lock(key: BaseKey) -> Lock:
+    async with __lock_global:
         _lock: Lock | None = __lock_pool.get(key)
         if not _lock:
             _lock = Lock()
             __lock_pool[key] = _lock
-        __last_lock = _lock
         return _lock
 
 
-@contextmanager
-def lock(key: BaseKey):
-    with get_lock(key):
+@asynccontextmanager
+async def lock(key: BaseKey):
+    async with get_lock(key):
         yield
